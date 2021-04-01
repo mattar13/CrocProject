@@ -138,8 +138,6 @@ def manual_format(img, scale = 2, stop_sign = False):
 if __name__ == "__main__":
 #if False:
     os.chdir("C://pyscripts//drag_rect//")
-    
-    
     btn_down = False
     img = cv2.imread('Figure_1.png')
     res = manual_format(img)
