@@ -1,6 +1,6 @@
 *Note this works for windows. 
 *********************README********************
-*1) Download file wavelet_analysis.zip
+*1) Download file wavelet_analysis.py in src
 *
 *2) Extract to destination of your choosing 
 *
