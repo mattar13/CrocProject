@@ -516,6 +516,7 @@ def write_video(directory, verbose, rate = 10):
 
 
 if __name__ == '__main__':
+    print("Beginning data analysis script")
     root = Tk()
     root.withdraw()
     btn_down = False #Need this global variable for the mouse callbacks
@@ -538,8 +539,10 @@ if __name__ == '__main__':
     
     
     args = parser.parse_args()
+    print("Arguments parsed")
+    
     per_min = 0.5
-    per_max =5.0
+    per_max = 5.0
     if args.lowlimit != None:
         per_min = float(args.lowlimit)
     if args.highlimit != None:
@@ -591,8 +594,14 @@ if __name__ == '__main__':
     name = dirs[-1]
     name = name.split('.')[0]
     further_split_name = name.split("_")
-    trial_name = str(further_split_name[3]+"_"+further_split_name[4])
-    
+    #Sometimes the trial name may not necessarily have the correct info
+    if len(further_split_name) > 4:
+        trial_name = str(further_split_name[3]+"_"+further_split_name[4])
+    else:
+        #for now leave as this 
+        trial_name = "Test"
+
+        
     a_start = time.time()
     if verbose >= 1: print("File {} successfully loaded".format(input_file)) 
     #CODE FOR TAKING IN DATA
