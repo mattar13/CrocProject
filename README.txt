@@ -8,7 +8,7 @@
 *	a) https://www.anaconda.com/download/
 *
 *4) Ensure ffmpeg is installed
-*	a) visit https://ffmpeg.zeranoe.com/builds/
+*	a) visit https://www.ffmpeg.org/download.html
 *	b) pick the correct build
 *	c) into the cmd paste this code:
 *		i) setx /M PATH "path\to\ffmpeg\bin;%PATH%"
