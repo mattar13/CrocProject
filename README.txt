@@ -7,13 +7,21 @@
 *3) Download and install Anaconda
 *	a) https://www.anaconda.com/download/
 *	
-*4) Make sure all dependencies are installed:
-*	a) numpy (in terminal pip install numpy)
-*	b) openCV2 (pip install opencv2)
-*	c) scipy (pip install scipy)
-*	d) pycwt (pip install pycwt)
+*4) Make sure all dependencies are installed by:
+-) going into Environments
+-) Click green arrow
+-) click Open Terminal
+-) type in commands in brackets
+*	a) numpy [pip install numpy]
+*	b) openCV2 [pip install opencv-python]
+*	c) scipy [pip install scipy]
+*	d) pycwt [pip install pycwt] 
 *
 *5) Double click on the batch file (WE ARE STILL WORKING ON THIS PART)
+
+ALTERNATIVELY: 
+-) Point the terminal to the location you saved the github repo cd //FILE_EXT//src
+-) type: python wavelet_analysis.py
 *
 *EXTRA) If you want to use a different options, create a new batch-file and specify the options 
 * EX: for doing a Mexican Hat analysis with a factor of 6
