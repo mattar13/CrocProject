@@ -14,13 +14,13 @@
 *		i) setx /M PATH "path\to\ffmpeg\bin;%PATH%"
 *		i) replace path\to\ with the preferred path of ffmpeg
 *	
-*4) Make sure all dependencies are installed:
+*5) Make sure all dependencies are installed:
 *	a) numpy
 *	b) openCV2
 *	c) scipy
-	d) pycwt
+*	d) pycwt
 *
-*5) Edit (or make) the default_blank batch file to include these directories, save it as default_settings:
+*6) Edit (or make) the default_blank batch file to include these directories, save it as default_settings:
 *	@echo off
 *	cls
 *	:start
@@ -31,10 +31,10 @@
 *	if not '%choice%'=='' set choice=%choice:~0,1%
 *	if '%choice%'=='y' goto start
 *
-*6) Double click on the batch file you have just saved and it will prompt you to enter the file
+*7) Double click on the batch file you have just saved and it will prompt you to enter the file
 *	
 *
-*7) If you want to use a different options, create a new batch-file and specify the options 
+*8) If you want to use a different options, create a new batch-file and specify the options 
 * EX: for doing a Mexican Hat analysis with a factor of 6
 *	@echo off
 *	cls
