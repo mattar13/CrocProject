@@ -185,7 +185,7 @@ def parse_frames(image_file, sig = 0.95):
                 #area_time = np.zeros((FRAME_COUNT)) 
                 #df[']
                 print("Now Select the Red dot")
-                red_res = bg.manual_format(img,scale = 1, stop_sign = True)
+                red_res = bg.manual_format(img, stop_sign=True)
                 red_x, red_y, red_w, red_h = red_res
                 box_h_begin = red_x
                 box_h_end = red_x+red_w
@@ -229,8 +229,6 @@ def parse_frames(image_file, sig = 0.95):
             t = t - np.mean(t)
                                    
             var, std, dat_norm = detrend(data_line)
-
-            
             ###################################################################
             if wavelet == 'DOG':
                 mother = cwt.DOG(order)
@@ -367,7 +365,7 @@ def parse_frames(image_file, sig = 0.95):
             #dx.set_ylim([0,500])
             ax.set_xlim([t.min(), t.max()])
             
-            plt.savefig(directory+'{}_analysis_frame-{}.png'.format(name, idx), bbox = 'tight')
+            #plt.savefig(directory+'{}_analysis_frame-{}.png'.format(name, idx), bbox = 'tight')
             if verbose >= 2:
                 print('*'*int((i/FRAME_COUNT)*100))
             
@@ -456,8 +454,8 @@ def parse_frames(image_file, sig = 0.95):
     
     ##[Writing means to a single file]#########################################
     
-    filename = 'C:\\pyscripts\\wavelet_analysis\\Overall_Analysis.xlsx'
-    append_data(filename, df_pow['Mean'].values,  str(trial_name), Yticks)
+    #filename = 'C:\\pyscripts\\wavelet_analysis\\Overall_Analysis.xlsx'
+    #append_data(filename, df_pow['Mean'].values,  str(trial_name), Yticks)
     ##[Plotting mean power and foruier]########################################
     plt.close('all')
     plt.ioff()
@@ -614,7 +612,7 @@ if __name__ == '__main__':
     #TODO: Determine how to output a csv and what needs to go in the csv
     #CODE FOR OUTPUTTING DATA
     w_start = time.time()
-    write_video(im_dir, verbose)
+    #write_video(im_dir, verbose) When the analysis is ready to be plotted
     if verbose >= 1: print('Movie file written to {}'.format(input_file))
     w_end = time.time()
     if verbose >= 3: print("Total write time = {}".format(abs(w_start - w_end)))

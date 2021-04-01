@@ -62,13 +62,13 @@ def manual_format(img, scale = 2, stop_sign = False):
     global btn_down
     btn_down = False
     orows, ocols, __ = img.shape
+    print(int(ocols/scale))
     r_img = cv2.resize(img, (int(ocols/scale), int(orows/scale)))
     repeat = True
     rows, cols, ch = img.shape
-    
+    print(img.shape)
     wName = "Select region"
     rectI = selectinwindow.dragRect
-    
     
     while repeat:
 
@@ -105,9 +105,21 @@ def manual_format(img, scale = 2, stop_sign = False):
                 repeat = False
                 cv2.destroyAllWindows()
                 return x,y,w,h,thet
+            elif escape == "ESC":
+                exit()
         else:
             
-            selectinwindow.init(rectI, img, wName, rows, cols)   
+            pts, rot_image = get_points(r_img)
+            xs = pts[0,:,0]
+            ys = pts[0,:,1]
+            
+            thet = theta(xs, ys)
+
+            M = cv2.getRotationMatrix2D((cols/2, rows/2), thet, 1)
+            dst = cv2.warpAffine(rot_image, M, (cols, rows))
+            cv2.destroyWindow("Image")
+            
+            selectinwindow.init(rectI, dst, wName, rows, cols)   
             cv2.namedWindow(rectI.wname)
             cv2.setMouseCallback(rectI.wname, selectinwindow.dragrect, rectI)
             
