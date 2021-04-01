@@ -1,40 +1,21 @@
 *Note this works for windows. 
 *********************README********************
-*1) Download file wavelet_analysis.py in src
+*1) Download github folder.
 *
 *2) Extract to destination of your choosing 
 *
 *3) Download and install Anaconda
 *	a) https://www.anaconda.com/download/
-*
-*4) Ensure ffmpeg is installed
-*	a) visit https://www.ffmpeg.org/download.html
-*	b) pick the correct build
-*	c) into the cmd paste this code:
-*		i) setx /M PATH "path\to\ffmpeg\bin;%PATH%"
-*		i) replace path\to\ with the preferred path of ffmpeg
 *	
-*5) Make sure all dependencies are installed:
-*	a) numpy
-*	b) openCV2
-*	c) scipy
-*	d) pycwt
+*4) Make sure all dependencies are installed:
+*	a) numpy (in terminal pip install numpy)
+*	b) openCV2 (pip install opencv2)
+*	c) scipy (pip install scipy)
+*	d) pycwt (pip install pycwt)
 *
-*6) Edit (or make) the default_blank batch file to include these directories, save it as default_settings:
-*	@echo off
-*	cls
-*	:start
-*	cd /d c:/THE DIRECTORY OF THE ANALYSIS SCRIPT
-*	python wavelet_analysis.py
-*	set choice=
-*	set /p choice="Do you want to restart? Press 'y' and enter for Yes: "
-*	if not '%choice%'=='' set choice=%choice:~0,1%
-*	if '%choice%'=='y' goto start
+*5) Double click on the batch file (WE ARE STILL WORKING ON THIS PART)
 *
-*7) Double click on the batch file you have just saved and it will prompt you to enter the file
-*	
-*
-*8) If you want to use a different options, create a new batch-file and specify the options 
+*EXTRA) If you want to use a different options, create a new batch-file and specify the options 
 * EX: for doing a Mexican Hat analysis with a factor of 6
 *	@echo off
 *	cls
