@@ -1,6 +1,8 @@
 *Note this works for windows. 
 *********************README********************
-*1) Download github folder.
+*1) Download github folder (https://github.com/mattar13/CrocProject).
+*    -) Click the green code button
+*    -) Click on Download ZIP
 *
 *2) Extract to destination of your choosing 
 *
@@ -8,11 +10,15 @@
 *	a) https://www.anaconda.com/download/
 *	
 *4) Set the python path and environment paths
-*     -) In windows search "environment variables" -> then to "Edit environment variables for your system"
-*     -) In the first box "User variables" highlight "Path" and click Edit
-*     -) Add 2 variables to user variables
-*         1) C:\Users\[YOUR_USERNAME]\Anaconda3
-*         2) C:\Users\[YOUR_USERNAME]\Anaconda3\Scripts
+*    -) On the installation screen in the Advanced Installation options check the first box 
+*    -) Add Anaconda3 to my PATH environment variable
+*    IF THIS CAUSES PROBLEMS THEN JUST CHOOSE THE ALTERNATVIE OPTION
+* ALTERNATIVELY
+*    -) In windows search "environment variables" -> then to "Edit environment variables for your system"
+*    -) In the first box "User variables" highlight "Path" and click Edit
+*    -) Add 2 variables to user variables
+*        1) C:\Users\[YOUR_USERNAME]\Anaconda3
+*        2) C:\Users\[YOUR_USERNAME]\Anaconda3\Scripts
 *
 *5) Make sure all dependencies are installed by:
 -) going into Environments
