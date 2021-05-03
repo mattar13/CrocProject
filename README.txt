@@ -12,7 +12,7 @@
 *     -) In the first box "User variables" highlight "Path" and click Edit
 *     -) Add 2 variables to user variables
 *         1) C:\Users\[YOUR_USERNAME]\Anaconda3
-*          2) C:\Users\[YOUR_USERNAME]\Anaconda3\Scripts
+*         2) C:\Users\[YOUR_USERNAME]\Anaconda3\Scripts
 *
 *5) Make sure all dependencies are installed by:
 -) going into Environments
