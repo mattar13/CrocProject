@@ -1,9 +1,9 @@
 *Note this works for windows. 
-*********************README********************
+*********************RUNNING FROM BATCH******************************************************* ********************
 *1) Download github folder (https://github.com/mattar13/CrocProject).
 *    -) Click the green code button
 *    -) Click on Download ZIP
-*
+*    
 *2) Extract to destination of your choosing 
 *
 *3) Download and install Anaconda
@@ -21,25 +21,30 @@
 *        2) C:\Users\[YOUR_USERNAME]\Anaconda3\Scripts
 *
 *5) Make sure all dependencies are installed by:
--) going into Environments
--) Click green arrow
--) click Open Terminal
--) type in commands in brackets
-*	a) numpy [pip install numpy]
-*	b) openCV2 [pip install opencv-python]
-*	c) scipy [pip install scipy]
-*	d) pycwt [pip install pycwt] 
+*    -) Open Anaconda -> go into Environments
+*    -) Click green arrow
+*    -) click Open Terminal
+*    -) type in commands in brackets
+*	     a) numpy [pip install numpy]
+*	     b) openCV2 [pip install opencv-python]
+*	     c) scipy [pip install scipy]
+*	     d) pycwt [pip install pycwt] 
 *
-*6) Ensure python is in the environment variables if on a windows computer
-*    (use this tutorial https://www.geeksforgeeks.org/how-to-set-up-command-prompt-for-python-in-windows10/#:~:text=Open%20Command%20Prompt%20and%20type,can%20run%20your%20program%20there.)
-*
-*7) Double click on the batch file 
+*6) Double click on the batch file and follow the prompts to extract the files
+* After setting this up, you will only need to click on the batch files to run the analysis
 
-ALTERNATIVELY: 
--) Point the terminal to the location you saved the github repo cd //FILE_EXT//src
--) type: python wavelet_analysis.py
+*********************RUNNING MANUALLY*********************************************************************************** 
+*1) Open Anaconda. Click on environments -> Click on the green arrow -> Click open terminal
 *
-*EXTRA) If you want to use a different options, create a new batch-file and specify the options 
+*2) Point the terminal to the location you saved the github repo 
+*    -) In the terminal type on [cd [WHERE YOU EXTRACTED THE GITHUB REPO]/src]
+*
+*3) type: [python wavelet_analysis.py]
+*
+* While this takes fewer steps it has to be done every time you want to analyze a file
+*
+*************************EXTRA*******************************************************************************************
+* If you want to use a different options, create a new batch-file and specify the options 
 * EX: for doing a Mexican Hat analysis with a factor of 6
 *	@echo off
 *	cls
