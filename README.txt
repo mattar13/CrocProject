@@ -17,7 +17,10 @@
 *	c) scipy [pip install scipy]
 *	d) pycwt [pip install pycwt] 
 *
-*5) Double click on the batch file (WE ARE STILL WORKING ON THIS PART)
+*5) Ensure python is in the environment variables if on a windows computer
+*    (use this tutorial https://www.geeksforgeeks.org/how-to-set-up-command-prompt-for-python-in-windows10/#:~:text=Open%20Command%20Prompt%20and%20type,can%20run%20your%20program%20there.)
+*
+*6) Double click on the batch file 
 
 ALTERNATIVELY: 
 -) Point the terminal to the location you saved the github repo cd //FILE_EXT//src
