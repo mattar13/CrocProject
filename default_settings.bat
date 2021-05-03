@@ -1,7 +1,7 @@
 @echo off
 cls
 :start
-cd /d c:/pyscripts/wavelet_analysis
+cd /d %cd%/src/
 python wavelet_analysis.py
 set choice=
 set /p choice="Do you want to restart? Press 'y' and enter for Yes: "
