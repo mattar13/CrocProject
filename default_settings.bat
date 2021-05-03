@@ -1,5 +1,6 @@
 @echo off
 cls
+activate base
 :start
 cd /d %cd%/src/
 python wavelet_analysis.py
