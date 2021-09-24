@@ -134,7 +134,10 @@ def extract_frame(img, hsv_mode = True, green = True):
     else: 
         return np.argmax(img[:,:,1], 0)
 
-def parse_frames(image_file, sig = 0.95, plotting = False):
+#def plot_data(data):
+
+
+def parse_frames(image_file, sig= 0.95, plotting = False, plot_spectra = False):
     """
     No documentation here yet
     """
@@ -389,51 +392,7 @@ def parse_frames(image_file, sig = 0.95, plotting = False):
     if verbose >= 1: print("{:10.2f} % of the frames have dropped".format((dropped/FRAME_COUNT)*100))
     
     #Plotting and saving the power spectra
-    row, cols = df_pow.shape
-    time = np.arange(0, cols)/FPS
-    
-    plt.close('all')
-    plt.ioff()
-    plt.contourf(time, df_pow.index.tolist(), df_pow)
-    plt.contour(time, df_pow.index.tolist(), df_pow) 
-    plt.title("Global Power over Time")
-    plt.ylabel("Period[cm]")
-    plt.xlabel("Time")
-    cax = plt.gca()
-    #plt.xscale('log')
-    cax.set_ylim(np.log2([period.min(), period.max()]))
-    cax.set_yticks(np.log2(Yticks))
-    cax.set_yticklabels(Yticks)
-    
-    
-    plt.savefig(directory+'{}_global_power-{}.png'.format(name, idx), bbox = 'tight')
-    
-    row, cols = df_for.shape
-    time = np.arange(0, cols)/FPS
-    plt.close('all')
-    plt.ioff()
-    plt.contourf(time, df_for.index.tolist(), df_for)
-    plt.contour(time, df_for.index.tolist(), df_for) 
-    plt.title("Fourier Power over Time")
-    plt.ylabel("Period[cm]")
-    plt.xlabel("Time")
-    cax = plt.gca()
-    #plt.xscale('log')
-    cax.set_ylim(np.log2([period.min(), period.max()]))
-    cax.set_yticks(np.log2(Yticks))
-    cax.set_yticklabels(Yticks)
-    plt.savefig(directory+'{}_fourier_power-{}.png'.format(name, idx), bbox = 'tight')
-    
-    plt.close('all')
-    plt.ioff()
-    rows, cols = df_auc.shape    
-    time = np.arange(0, cols)/FPS
-    plt.plot(time, df_auc.T)
-    plt.xlabel("Time")
-    plt.ylabel("Area under the curve in cm")
-    plt.title("Area under the curve over time")
-    plt.savefig(directory+'{}_area_under_curve-{}.png'.format(name, idx), bbox = 'tight')
-    
+    ##[Writing means to a single file]#########################################
     df_wav['Mean'] = df_wav.mean(axis = 1)
     df_pow['Mean'] = df_pow.mean(axis = 1)
     df_for['Mean'] = df_for.mean(axis = 1)
@@ -453,56 +412,108 @@ def parse_frames(image_file, sig = 0.95, plotting = False):
     df_for.to_excel(writer, "Fourier Spectra")
     df_pow.to_excel(writer, "Global Power Spectra")
     writer.save()
+
+
+    if plot_spectra:
+        row, cols = df_pow.shape
+        time = np.arange(0, cols)/FPS
+        
+        plt.close('all')
+        plt.ioff()
+        plt.contourf(time, df_pow.index.tolist(), df_pow)
+        plt.contour(time, df_pow.index.tolist(), df_pow) 
+        plt.title("Global Power over Time")
+        plt.ylabel("Period[cm]")
+        plt.xlabel("Time")
+        cax = plt.gca()
+        #plt.xscale('log')
+        cax.set_ylim(np.log2([period.min(), period.max()]))
+        cax.set_yticks(np.log2(Yticks))
+        cax.set_yticklabels(Yticks)
+        
+        
+        plt.savefig(directory+'{}_global_power-{}.png'.format(name, idx), bbox = 'tight')
+        
+        row, cols = df_for.shape
+        time = np.arange(0, cols)/FPS
+        plt.close('all')
+        plt.ioff()
+        plt.contourf(time, df_for.index.tolist(), df_for)
+        plt.contour(time, df_for.index.tolist(), df_for) 
+        plt.title("Fourier Power over Time")
+        plt.ylabel("Period[cm]")
+        plt.xlabel("Time")
+        cax = plt.gca()
+        #plt.xscale('log')
+        cax.set_ylim(np.log2([period.min(), period.max()]))
+        cax.set_yticks(np.log2(Yticks))
+        cax.set_yticklabels(Yticks)
+        plt.savefig(directory+'{}_fourier_power-{}.png'.format(name, idx), bbox = 'tight')
+        
+        plt.close('all')
+        plt.ioff()
+        rows, cols = df_auc.shape    
+        time = np.arange(0, cols)/FPS
+        plt.plot(time, df_auc.T)
+        plt.xlabel("Time")
+        plt.ylabel("Area under the curve in cm")
+        plt.title("Area under the curve over time")
+        plt.savefig(directory+'{}_area_under_curve-{}.png'.format(name, idx), bbox = 'tight')
+        
+
+        
+        
+        
+        #filename = 'C:\\pyscripts\\wavelet_analysis\\Overall_Analysis.xlsx'
+        #append_data(filename, df_pow['Mean'].values,  str(trial_name), Yticks)
+        ##[Plotting mean power and foruier]########################################
+        plt.close('all')
+        plt.ioff()
+        plt.plot(df_pow['Mean'],  df_pow.index.tolist(), label = "Global Power")    
+        plt.plot(df_for['Mean'],  df_for.index.tolist(), label = "Fourier Power")
+        plt.title("Global Power averaged over Time")
+        plt.ylabel("Period[cm]")
+        plt.xlabel("Power[cm^2]")
+        cax = plt.gca()
+        #plt.xscale('log')
+        cax.set_ylim(np.log2([period.min(), period.max()]))
+        cax.set_yticks(np.log2(Yticks))
+        cax.set_yticklabels(Yticks)
+        plt.legend()
+        plt.savefig(directory+'{}_both_{}.png'.format(name, idx), bbox = 'tight')
+        
+        plt.close('all')
+        plt.ioff()
+        plt.plot(df_pow['Mean'],  df_pow.index.tolist(), label = "Global Power")  
+        plt.title("Global Power averaged over Time")
+        plt.ylabel("Period[cm]")
+        plt.xlabel("Power[cm^2]")
+        cax = plt.gca()
+        #plt.xscale('log')
+        cax.set_ylim(np.log2([period.min(), period.max()]))
+        cax.set_yticks(np.log2(Yticks))
+        cax.set_yticklabels(Yticks)
+        plt.legend()
+        plt.savefig(directory+'{}_global_power_{}.png'.format(name, idx), bbox = 'tight')
+        
+        plt.close('all')
+        plt.ioff()   
+        plt.plot(df_for['Mean'],  df_for.index.tolist(), label = "Fourier Power")
+        plt.title("Fourier averaged over Time")
+        plt.ylabel("Period[cm]")
+        plt.xlabel("Power[cm^2]")
+        cax = plt.gca()
+        #plt.xscale('log')
+        cax.set_ylim(np.log2([period.min(), period.max()]))
+        cax.set_yticks(np.log2(Yticks))
+        cax.set_yticklabels(Yticks)
+        plt.legend()
+        plt.savefig(directory+'{}_fourier_{}.png'.format(name, idx), bbox = 'tight')
+        
+        cap.release()
     
-    ##[Writing means to a single file]#########################################
     
-    #filename = 'C:\\pyscripts\\wavelet_analysis\\Overall_Analysis.xlsx'
-    #append_data(filename, df_pow['Mean'].values,  str(trial_name), Yticks)
-    ##[Plotting mean power and foruier]########################################
-    plt.close('all')
-    plt.ioff()
-    plt.plot(df_pow['Mean'],  df_pow.index.tolist(), label = "Global Power")    
-    plt.plot(df_for['Mean'],  df_for.index.tolist(), label = "Fourier Power")
-    plt.title("Global Power averaged over Time")
-    plt.ylabel("Period[cm]")
-    plt.xlabel("Power[cm^2]")
-    cax = plt.gca()
-    #plt.xscale('log')
-    cax.set_ylim(np.log2([period.min(), period.max()]))
-    cax.set_yticks(np.log2(Yticks))
-    cax.set_yticklabels(Yticks)
-    plt.legend()
-    plt.savefig(directory+'{}_both_{}.png'.format(name, idx), bbox = 'tight')
     
-    plt.close('all')
-    plt.ioff()
-    plt.plot(df_pow['Mean'],  df_pow.index.tolist(), label = "Global Power")  
-    plt.title("Global Power averaged over Time")
-    plt.ylabel("Period[cm]")
-    plt.xlabel("Power[cm^2]")
-    cax = plt.gca()
-    #plt.xscale('log')
-    cax.set_ylim(np.log2([period.min(), period.max()]))
-    cax.set_yticks(np.log2(Yticks))
-    cax.set_yticklabels(Yticks)
-    plt.legend()
-    plt.savefig(directory+'{}_global_power_{}.png'.format(name, idx), bbox = 'tight')
-    
-    plt.close('all')
-    plt.ioff()   
-    plt.plot(df_for['Mean'],  df_for.index.tolist(), label = "Fourier Power")
-    plt.title("Fourier averaged over Time")
-    plt.ylabel("Period[cm]")
-    plt.xlabel("Power[cm^2]")
-    cax = plt.gca()
-    #plt.xscale('log')
-    cax.set_ylim(np.log2([period.min(), period.max()]))
-    cax.set_yticks(np.log2(Yticks))
-    cax.set_yticklabels(Yticks)
-    plt.legend()
-    plt.savefig(directory+'{}_fourier_{}.png'.format(name, idx), bbox = 'tight')
-    
-    cap.release()
     return directory
     
 def write_video(directory, verbose, rate = 10):
