@@ -134,7 +134,7 @@ def extract_frame(img, hsv_mode = True, green = True):
     else: 
         return np.argmax(img[:,:,1], 0)
 
-def parse_frames(image_file, sig = 0.95):
+def parse_frames(image_file, sig = 0.95, plotting = False):
     """
     No documentation here yet
     """
@@ -289,86 +289,88 @@ def parse_frames(image_file, sig = 0.95):
             Yticks = 2 ** np.arange(np.ceil(np.log2(period.min())),
                            np.ceil(np.log2(period.max())))
 
-            plt.close('all')
-            plt.ioff()
-            figprops = dict(figsize=(11, 8), dpi=72)
-            fig = plt.figure(**figprops)
-            
-            wx = plt.axes([0.77, 0.75, 0.2, 0.2])
-            imz = 0
-            for idxy in range(0,len(period), 10):
-                wx.plot(t, mother.psi(t / period[idxy]) + imz, linewidth = 1.5)
-                imz+=1
-            wx.xaxis.set_ticklabels([])
-            #wx.set_ylim([-10,10])
-            # First sub-plot, the original time series anomaly and inverse wavelet
-            # transform.
-            ax = plt.axes([0.1, 0.75, 0.65, 0.2])
-            ax.plot(t, data_line - np.mean(data_line), 'k', label = "Original Data")
-            ax.plot(t, iwave, '-', linewidth=1, color=[0.5, 0.5, 0.5], label = "Reconstructed wave")
-            ax.plot(t, dat_norm, '--k', linewidth=1.5, color=[0.5, 0.5, 0.5],label = "Denoised Wave")
-            ax.set_title('a) {:10.2f} from beginning of trial.'.format(real_time))
-            ax.set_ylabel(r'{} [{}]'.format("Amplitude", unit))
-            ax.legend(loc = 1)
-            ax.set_ylim([-200, 200])
-            #If the non-serrated section, bounds are 200 - 
-            # Second sub-plot, the normalized wavelet power spectrum and significance
-            # level contour lines and cone of influece hatched area. Note that period
-            # scale is logarithmic.
-            bx = plt.axes([0.1, 0.37, 0.65, 0.28], sharex=ax)
-            levels = [0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16]
-            cont = bx.contourf(t, np.log2(period), np.log2(power), np.log2(levels),
-                        extend='both', cmap=plt.cm.viridis)
-            extent = [t.min(), t.max(), 0, max(period)]
-            bx.contour(t, np.log2(period), sig95, [-99, 1], colors='k', linewidths=2,
-                       extent=extent)
-            bx.fill(np.concatenate([t, t[-1:] + dt, t[-1:] + dt,
-                                       t[:1] - dt, t[:1] - dt]),
-                    np.concatenate([np.log2(coi), [1e-9], np.log2(period[-1:]),
-                                       np.log2(period[-1:]), [1e-9]]),
-                    'k', alpha=0.3, hatch='x')
-            bx.set_title('b) {} Octaves Wavelet Power Spectrum [{}({})]'.format(octaves, mother.name, order))
-            bx.set_ylabel('Period (cm)')
-            #
-            Yticks = 2 ** np.arange(np.ceil(np.log2(period.min())),
-                                       np.ceil(np.log2(period.max())))
-            bx.set_yticks(np.log2(Yticks))
-            bx.set_yticklabels(Yticks)
-            cbar = fig.colorbar(cont, ax = bx)
-            # Third sub-plot, the global wavelet and Fourier power spectra and theoretical
-            # noise spectra. Note that period scale is logarithmic.
-            cx = plt.axes([0.77, 0.37, 0.2, 0.28], sharey=bx)
-            cx.plot(glbl_signif, np.log2(period), 'k--')
-            cx.plot(var * fft_theor, np.log2(period), '--', color='#cccccc')
-            cx.plot(var * fft_power, np.log2(1./fftfreqs), '-', color='#cccccc',
-                    linewidth=1.)
-            cx.plot(var * glbl_power, np.log2(period), 'k-', linewidth=1.5)
-            cx.set_title('c) Global Wavelet Spectrum')
-            cx.set_xlabel(r'Power [({})^2]'.format(unit))
-            #cx.set_xlim([0, (var*fft_theor).max()])
-            plt.xscale('log')
-            cx.set_ylim(np.log2([period.min(), period.max()]))
-            cx.set_yticks(np.log2(Yticks))
-            cx.set_yticklabels(Yticks)
-            
-                        #if sig_array == []:
-            yvals = np.linspace(Yticks.min(), Yticks.max(), len(period))
+            #Start plotting
+            if plotting:
+                plt.close('all')
+                plt.ioff()
+                figprops = dict(figsize=(11, 8), dpi=72)
+                fig = plt.figure(**figprops)
+                
+                wx = plt.axes([0.77, 0.75, 0.2, 0.2])
+                imz = 0
+                for idxy in range(0,len(period), 10):
+                    wx.plot(t, mother.psi(t / period[idxy]) + imz, linewidth = 1.5)
+                    imz+=1
+                wx.xaxis.set_ticklabels([])
+                #wx.set_ylim([-10,10])
+                # First sub-plot, the original time series anomaly and inverse wavelet
+                # transform.
+                ax = plt.axes([0.1, 0.75, 0.65, 0.2])
+                ax.plot(t, data_line - np.mean(data_line), 'k', label = "Original Data")
+                ax.plot(t, iwave, '-', linewidth=1, color=[0.5, 0.5, 0.5], label = "Reconstructed wave")
+                ax.plot(t, dat_norm, '--k', linewidth=1.5, color=[0.5, 0.5, 0.5],label = "Denoised Wave")
+                ax.set_title('a) {:10.2f} from beginning of trial.'.format(real_time))
+                ax.set_ylabel(r'{} [{}]'.format("Amplitude", unit))
+                ax.legend(loc = 1)
+                ax.set_ylim([-200, 200])
+                #If the non-serrated section, bounds are 200 - 
+                # Second sub-plot, the normalized wavelet power spectrum and significance
+                # level contour lines and cone of influece hatched area. Note that period
+                # scale is logarithmic.
+                bx = plt.axes([0.1, 0.37, 0.65, 0.28], sharex=ax)
+                levels = [0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16]
+                cont = bx.contourf(t, np.log2(period), np.log2(power), np.log2(levels),
+                            extend='both', cmap=plt.cm.viridis)
+                extent = [t.min(), t.max(), 0, max(period)]
+                bx.contour(t, np.log2(period), sig95, [-99, 1], colors='k', linewidths=2,
+                        extent=extent)
+                bx.fill(np.concatenate([t, t[-1:] + dt, t[-1:] + dt,
+                                        t[:1] - dt, t[:1] - dt]),
+                        np.concatenate([np.log2(coi), [1e-9], np.log2(period[-1:]),
+                                        np.log2(period[-1:]), [1e-9]]),
+                        'k', alpha=0.3, hatch='x')
+                bx.set_title('b) {} Octaves Wavelet Power Spectrum [{}({})]'.format(octaves, mother.name, order))
+                bx.set_ylabel('Period (cm)')
+                #
+                Yticks = 2 ** np.arange(np.ceil(np.log2(period.min())),
+                                        np.ceil(np.log2(period.max())))
+                bx.set_yticks(np.log2(Yticks))
+                bx.set_yticklabels(Yticks)
+                cbar = fig.colorbar(cont, ax = bx)
+                # Third sub-plot, the global wavelet and Fourier power spectra and theoretical
+                # noise spectra. Note that period scale is logarithmic.
+                cx = plt.axes([0.77, 0.37, 0.2, 0.28], sharey=bx)
+                cx.plot(glbl_signif, np.log2(period), 'k--')
+                cx.plot(var * fft_theor, np.log2(period), '--', color='#cccccc')
+                cx.plot(var * fft_power, np.log2(1./fftfreqs), '-', color='#cccccc',
+                        linewidth=1.)
+                cx.plot(var * glbl_power, np.log2(period), 'k-', linewidth=1.5)
+                cx.set_title('c) Global Wavelet Spectrum')
+                cx.set_xlabel(r'Power [({})^2]'.format(unit))
+                #cx.set_xlim([0, (var*fft_theor).max()])
+                plt.xscale('log')
+                cx.set_ylim(np.log2([period.min(), period.max()]))
+                cx.set_yticks(np.log2(Yticks))
+                cx.set_yticklabels(Yticks)
+                
+                            #if sig_array == []:
+                yvals = np.linspace(Yticks.min(), Yticks.max(), len(period))
 
+                
+                plt.xscale('linear')
+                plt.setp(cx.get_yticklabels(), visible=False)
+                
+                # Fourth sub-plot, the scale averaged wavelet spectrum.
+                dx = plt.axes([0.1, 0.07, 0.65, 0.2], sharex=ax)
+                dx.axhline(scale_avg_signif, color='k', linestyle='--', linewidth=1.)
+                dx.plot(t, scale_avg, 'k-', linewidth=1.5)
+                dx.set_title('d) {}-{}cm scale-averaged power'.format(per_min, per_max))
+                dx.set_xlabel('Distance from center(cm)')
+                dx.set_ylabel(r'Average variance [{}]'.format(unit))
+                #dx.set_ylim([0,500])
+                ax.set_xlim([t.min(), t.max()])
+                #plt.savefig(directory+'{}_analysis_frame-{}.png'.format(name, idx), bbox = 'tight')
             
-            plt.xscale('linear')
-            plt.setp(cx.get_yticklabels(), visible=False)
-            
-            # Fourth sub-plot, the scale averaged wavelet spectrum.
-            dx = plt.axes([0.1, 0.07, 0.65, 0.2], sharex=ax)
-            dx.axhline(scale_avg_signif, color='k', linestyle='--', linewidth=1.)
-            dx.plot(t, scale_avg, 'k-', linewidth=1.5)
-            dx.set_title('d) {}-{}cm scale-averaged power'.format(per_min, per_max))
-            dx.set_xlabel('Distance from center(cm)')
-            dx.set_ylabel(r'Average variance [{}]'.format(unit))
-            #dx.set_ylim([0,500])
-            ax.set_xlim([t.min(), t.max()])
-            
-            #plt.savefig(directory+'{}_analysis_frame-{}.png'.format(name, idx), bbox = 'tight')
             if verbose >= 2:
                 print('*'*int((i/FRAME_COUNT)*100))
             
@@ -386,10 +388,7 @@ def parse_frames(image_file, sig = 0.95):
     if verbose >= 1: print('All images saved')
     if verbose >= 1: print("{:10.2f} % of the frames have dropped".format((dropped/FRAME_COUNT)*100))
     
-
-    
-    #Plotting and saving tyhe 
-
+    #Plotting and saving the power spectra
     row, cols = df_pow.shape
     time = np.arange(0, cols)/FPS
     
