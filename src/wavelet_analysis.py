@@ -39,13 +39,12 @@ from openpyxl import load_workbook
 
 #We need to go through and more clearly document what is doing what. Maybe a walk through of each step
 
-
+"""
+From each image, you will get a range of maximum pixels. 
+We found that the easiest way to calculate the best pixel to use was to take the median value
+This function takes in an image and calcuates the largest nonzero values
+"""
 def median_pixel(n, arr):
-    r"""
-    From each image, you will get a range of maximum pixels. 
-    We found that the easiest way to calculate the best pixel to use was to take the median value
-    This function takes in an image and calcuates the largest nonzero values
-    """
     med_arr = np.zeros(n)
     for i in range(n):
         vals = arr[:,i].nonzero()
@@ -137,10 +136,10 @@ def extract_frame(img, hsv_mode = True, green = True):
 
 def parse_frames(image_file, sig = 0.95):
     """
-    
+    No documentation here yet
     """
-    cap = cv2.VideoCapture(image_file)
-    if verbose:print("Video successfully loaded")
+    cap = cv2.VideoCapture(image_file) #Load the video into the openCV interface
+    if verbose: print("Video successfully loaded")
     FRAME_COUNT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     FPS = cap.get(cv2.CAP_PROP_FPS)
     if verbose > 1: 
@@ -151,8 +150,12 @@ def parse_frames(image_file, sig = 0.95):
              "FRAME_HEIGHT: ", FRAME_HEIGHT, " \n",
              "FRAME_WIDTH: ", FRAME_WIDTH, " \n",)
     
-     
-    directory = os.getcwd() + '\\analysis\\{}_{}_{}_{}({})_{}_{}_scaled\\'.format(date, trial_type, name, wavelet, order, per_min, per_max)
+    split_path = image_file.split("/")
+    file_name = split_path[-1].split(".")[0:-1]
+    #print(file_name)
+    path_list = split_path[0:-1] + ["\\analysis\\"] + file_name
+    directory = os.path.join(*path_list)
+    #directory = os.getcwd() + '\\analysis\\{}_{}_{}_{}({})_{}_{}_scaled\\'.format(date, trial_type, name, wavelet, order, per_min, per_max)
     if not os.path.exists(directory):
         os.makedirs(directory)
     made = False    
@@ -583,15 +586,16 @@ if __name__ == '__main__':
     if verbose >= 1: print("Select a input file as a video file (.mpg .mp4. avi)")
   
     input_file = askopenfilename()#'C:/pyscripts/wavelet_analysis/Videos/2018_07_05/GH010222.mp4' 
-    root.update()
+    root.update() #This probably is an issue
     root.destroy()
     
     dirs = input_file.split('/')
-    date = dirs[-3]
-    trial_type = dirs[-2]
-    name = dirs[-1]
-    name = name.split('.')[0]
-    further_split_name = name.split("_")
+    print(dirs)
+    date = "test" #dirs[-3]
+    trial_type = "test" #dirs[-2]
+    name = "test" #dirs[-1]
+    name = "test" #name.split('.')[0]
+    further_split_name = "test" #name.split("_")
     #Sometimes the trial name may not necessarily have the correct info
     if len(further_split_name) > 4:
         trial_name = str(further_split_name[3]+"_"+further_split_name[4])
