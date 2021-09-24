@@ -25,10 +25,12 @@ def get_points(im):
     data['lines'] = []
 
     # Set the callback function for any mouse event
-    cv2.imshow("Image", im)
+    #print("Mouse handler active")
+    cv2.imshow("Image", im) #Display the image and determine the line for calibration
     cv2.setMouseCallback("Image", mouse_handler, data)
     cv2.waitKey(0)
 
+    #print("Calibration line found")
     # Convert array to np.array in shape n,2,2
     points = np.uint16(data['lines'])
     
@@ -58,100 +60,90 @@ def mouse_handler(event, x, y, flags, data):
         cv2.imshow("Image", data['im'])
 
 
-def manual_format(img, scale = 2, stop_sign = False):
-    global btn_down
-    btn_down = False
-    orows, ocols, __ = img.shape
-    print(int(ocols/scale))
-    r_img = cv2.resize(img, (int(ocols/scale), int(orows/scale)))
-    repeat = True
+def manual_format(img, scale = 3, stop_sign = False, thet = 0.0):
+    global btn_down #set the button down as a global
+    btn_down = False #set button down as false
+    orows, ocols, __ = img.shape #get image shape 
+    #print(int(ocols/scale))
+    r_img = cv2.resize(img, (int(ocols/scale), int(orows/scale))) #resize the image and display
     rows, cols, ch = img.shape
-    print(img.shape)
+    #print(img.shape)
     wName = "Select region"
     rectI = selectinwindow.dragRect
-    
-    while repeat:
 
-        if stop_sign == False:
-            pts, rot_image = get_points(r_img)
-            xs = pts[0,:,0]
-            ys = pts[0,:,1]
-            
-            thet = theta(xs, ys)
-            
-            M = cv2.getRotationMatrix2D((cols/2, rows/2), thet, 1)
-            dst = cv2.warpAffine(rot_image, M, (cols, rows))
-            cv2.destroyWindow("Image")
-            
-            selectinwindow.init(rectI, dst, wName, rows, cols)   
-            cv2.namedWindow(rectI.wname)
-            cv2.setMouseCallback(rectI.wname, selectinwindow.dragrect, rectI)
-            
-            while True:
-                # display the image
-                cv2.imshow(wName, rectI.image)
-                key = cv2.waitKey(0) & 0xFF
-                # if returnflag is True, break from the loop
-                if rectI.returnflag == True:
-                    cv2.destroyAllWindows()
-                    break
-            x = rectI.outRect.x * scale
-            y = rectI.outRect.y * scale
-            w = rectI.outRect.w * scale
-            h = rectI.outRect.h * scale
-            print("all done")
-            escape = input("Are you satisfied with these image boundaries?").capitalize()
-            if escape == "Y":
-                repeat = False
-                cv2.destroyAllWindows()
-                return x,y,w,h,thet
-            elif escape == "ESC":
-                exit()
-        else:
-            
-            pts, rot_image = get_points(r_img)
-            xs = pts[0,:,0]
-            ys = pts[0,:,1]
-            
-            thet = theta(xs, ys)
 
-            M = cv2.getRotationMatrix2D((cols/2, rows/2), thet, 1)
-            dst = cv2.warpAffine(rot_image, M, (cols, rows))
-            cv2.destroyWindow("Image")
-            
-            selectinwindow.init(rectI, dst, wName, rows, cols)   
-            cv2.namedWindow(rectI.wname)
-            cv2.setMouseCallback(rectI.wname, selectinwindow.dragrect, rectI)
-            
-            while True:
-                # display the image
-                cv2.imshow(wName, rectI.image)
-                key = cv2.waitKey(0) & 0xFF
-                # if returnflag is True, break from the loop
-                if rectI.returnflag == True:
-                    cv2.destroyAllWindows()
-                    break
-            x = rectI.outRect.x * scale
-            y = rectI.outRect.y * scale
-            w = rectI.outRect.w * scale
-            h = rectI.outRect.h * scale
-            print("all done")
-            escape = input("Are you satisfied with these image boundaries?").capitalize()
-            if escape == "Y":
-                repeat = False
+    #while repeat:
+    if stop_sign == False:
+        pts, rot_image = get_points(r_img)
+        xs = pts[0, :, 0]
+        ys = pts[0, :, 1]
+
+        thet = theta(xs, ys)
+
+        M = cv2.getRotationMatrix2D((cols/2, rows/2), thet, 1)
+        dst = cv2.warpAffine(rot_image, M, (int(round(cols/scale)), int(round(rows/scale))))
+        cv2.destroyWindow("Image")
+
+        selectinwindow.init(rectI, dst, wName, rows, cols)
+        cv2.namedWindow(rectI.wname)
+        cv2.setMouseCallback(rectI.wname, selectinwindow.dragrect, rectI)
+
+        while True:
+            # display the image
+            cv2.imshow(wName, rectI.image)
+            key = cv2.waitKey(0) & 0xFF
+            # if returnflag is True, break from the loop
+            if rectI.returnflag == True:
                 cv2.destroyAllWindows()
-                return x,y,w,h
-            
+                break
+        x = rectI.outRect.x * scale
+        y = rectI.outRect.y * scale
+        w = rectI.outRect.w * scale
+        h = rectI.outRect.h * scale
+        #print("all done")
+        return x, y, w, h, thet
+
+    else:
         
-    #return x, y, ix, iy, thet
+        #pts, rot_image = get_points(r_img)
+        #xs = pts[0,:,0]
+        #ys = pts[0,:,1]
+        
+        #thet = theta#(xs, ys)
 
-
+        M = cv2.getRotationMatrix2D((cols/2, rows/2), thet, 1)
+        dst = cv2.warpAffine(r_img, M, (int(round(cols/scale)), int(round(rows/scale))))
+        cv2.destroyWindow("Image")
+        
+        selectinwindow.init(rectI, dst, wName, rows, cols)   
+        cv2.namedWindow(rectI.wname)
+        cv2.setMouseCallback(rectI.wname, selectinwindow.dragrect, rectI)
+        
+        while True:
+            # display the image
+            cv2.imshow(wName, rectI.image)
+            key = cv2.waitKey(0) & 0xFF
+            # if returnflag is True, break from the loop
+            if rectI.returnflag == True:
+                cv2.destroyAllWindows()
+                break
+        x = rectI.outRect.x * scale
+        y = rectI.outRect.y * scale
+        w = rectI.outRect.w * scale
+        h = rectI.outRect.h * scale
+        #print("all done")
+        return x,y,w,h
 
 if __name__ == "__main__":
 #if False:
-    os.chdir("C://pyscripts//drag_rect//")
+    #os.chdir("C://pyscripts//drag_rect//")
+    from tkinter.filedialog import askopenfilename
+    input_file = askopenfilename()
+    # Load the video into the openCV interface
+    cap = cv2.VideoCapture(input_file)
     btn_down = False
-    img = cv2.imread('Figure_1.png')
+    a, img = cap.read()
     res = manual_format(img)
-
-    
+    print(res)
+    res = manual_format(img, stop_sign = True)
+    print(res)
