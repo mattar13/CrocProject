@@ -31,9 +31,9 @@ while True:
     if rectI.returnflag == True:
         break
 
-print "Dragged rectangle coordinates"
-print str(rectI.outRect.x) + ',' + str(rectI.outRect.y) + ',' + \
-      str(rectI.outRect.w) + ',' + str(rectI.outRect.h)
+print("Dragged rectangle coordinates")
+print(str(rectI.outRect.x) + ',' + str(rectI.outRect.y) + ',' + \
+      str(rectI.outRect.w) + ',' + str(rectI.outRect.h))
 
 # close all open windows
 cv2.destroyAllWindows()

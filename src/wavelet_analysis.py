@@ -137,7 +137,7 @@ def extract_frame(img, hsv_mode = True, green = True):
 #def plot_data(data):
 
 
-def parse_frames(image_file, sig= 0.95, plotting = False, plot_spectra = False):
+def parse_frames(image_file, sig= 0.95, plotting = False, plot_spectra = True):
     """
     No documentation here yet
     """
@@ -512,8 +512,7 @@ def parse_frames(image_file, sig= 0.95, plotting = False, plot_spectra = False):
         
         cap.release()
     
-    
-    
+    print(directory)
     return directory
     
 def write_video(directory, verbose, rate = 10):
@@ -618,7 +617,7 @@ if __name__ == '__main__':
     if verbose >= 1: print("File {} successfully loaded".format(input_file)) 
     #CODE FOR TAKING IN DATA
     im_dir = parse_frames(input_file)
-
+    print(im_dir)
     #if verbose >= 1: print('{} frames successfully parsed'.format(len(frame_to_vec)))
     a_end = time.time()
     if verbose >= 3: print("Total analysis time = {}".format(abs(a_start - a_end)))
