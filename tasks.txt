@@ -3,3 +3,4 @@
 3) How do we interact with Tkinter? 
      root, Tk and root.withdraw seem to need to be called right away
 4) What does the detrend function do? I assume it normalizes the line that we extract
+5) Why is line 126 necessary?
