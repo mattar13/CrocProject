@@ -1,8 +1,7 @@
 import numpy as np
 import cv2
-import os
+import sys, os
 import math
-import sys
 from scipy import ndimage
 # Set recursion limit
 sys.setrecursionlimit(10 ** 9)
@@ -113,7 +112,7 @@ def manual_format(img, scale = 3, stop_sign = False, thet = 0.0):
 
         M = cv2.getRotationMatrix2D((cols/2, rows/2), thet, 1)
         dst = cv2.warpAffine(r_img, M, (int(round(cols/scale)), int(round(rows/scale))))
-        cv2.destroyWindow("Image")
+        #cv2.destroyWindow("Image2")
         
         selectinwindow.init(rectI, dst, wName, rows, cols)   
         cv2.namedWindow(rectI.wname)
