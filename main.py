@@ -14,11 +14,12 @@ pip instll pycwt
 
 
 #Extend the folder to include the src
+from multiprocessing import dummy
 import os, sys #These are used for extending the imports
 src_path = os.path.join(os.getcwd(), "src") #This is the folder containing the source codes
 sys.path.append(src_path) #add the source path to the system path
 
-import numpy as np #Import numpy to do matrix processing and linearization
+#import numpy as np #Import numpy to do matrix processing and linearization
 import cv2 #This is used to interact with all of the image and movies
 import matplotlib.pyplot as plt #of course matplotlib and PyPlot are used to do plotting
 plt.ioff() #We want to turn the interactive plotting off
@@ -102,7 +103,7 @@ if args.graphing != None:
 #==================================Imported from SRC==================================#
 import selectinwindow as sw #This is a script that is used for slecting in the gui
 import boundry_gui as bg #this is used for 
-from filtering import * #This imports all of my predefined filtering functions
+from utilities import * #This imports all of my predefined filtering functions
 #print("Imports are completed") #This is a debug statement
 
 
@@ -111,4 +112,25 @@ if __name__ == '__main__':
      if verbose >= 1: print("Select a input file as a video file (.mpg .mp4. avi)")
      input_file = askopenfilename() #'C:/pyscripts/wavelet_analysis/Videos/2018_07_05/GH010222.mp4' 
      print(input_file)
+     dirs = input_file.split('/')
+     print(dirs)
+
+     #= Include everything under here in a new function file details
+     #date = "test" #dirs[-3] #Work in some kind of name split here
+     #trial_type = "test" #dirs[-2]
+     #name = "test" #dirs[-1]
+     #name = "test" #name.split('.')[0]
+     #further_split_name = "test" #name.split("_")
+
+     #root.update() #Why is this here?
+     #root.destroy()
+     a_start = time.time() #Once we are ready to run the analysis we can
+     # now we can start to parse the frames
+
+     #in order to do some testing we may need dummy files
+     #dummy_image = np.random.rand(100,100)
+     #print(dummy_image)
+     #collapsed_arr = median_pixel(dummy_image)
+     #print(collapsed_arr)
+     #plt.plot(collapsed_arr)
 
