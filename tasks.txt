@@ -1,0 +1,5 @@
+1) What do the period minimum and maximum mean? 
+2) What do the octaves and suboctaves mean? 
+3) How do we interact with Tkinter? 
+     root, Tk and root.withdraw seem to need to be called right away
+4) What does the detrend function do? I assume it normalizes the line that we extract
