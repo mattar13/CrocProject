@@ -1,24 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jun  4 15:00:41 2018
-
-@author: Matthew Tarchick
-
-PyWavelets package is citable as:
-    
-Lee G, Wasilewski F, Gommers R, Wohlfahrt K, O’Leary A, Nahrstaedt H, and Contributors, 
-    “PyWavelets - Wavelet Transforms in Python”, 
-    2006-, https://github.com/PyWavelets/pywt [Online; accessed 2018-MM-DD].
-    
-in order to install all files, go to ipython shell and type in
-pip instll pycwt
-
-"""
-
 import subprocess
-import time
-
-import selectinwindow
 
 #Splining and filtering
 from scipy.interpolate import splev, splrep
@@ -68,7 +48,6 @@ def parse_frames(image_file, sig= 0.95, plotting = False, plot_spectra = True):
     No documentation here yet
     """
     cap = cv2.VideoCapture(image_file) #Load the video into the openCV interface
-    if verbose: print("Video successfully loaded")
     FRAME_COUNT = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     FPS = cap.get(cv2.CAP_PROP_FPS)
     if verbose > 1: 
