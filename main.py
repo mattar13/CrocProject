@@ -16,6 +16,7 @@ pip instll pycwt
 #Extend the folder to include the src
 from multiprocessing import dummy
 import os, sys #These are used for extending the imports
+import time
 src_path = os.path.join(os.getcwd(), "src") #This is the folder containing the source codes
 sys.path.append(src_path) #add the source path to the system path
 
@@ -125,7 +126,73 @@ if __name__ == '__main__':
      #root.update() #Why is this here?
      #root.destroy()
      a_start = time.time() #Once we are ready to run the analysis we can
+     
      # now we can start to parse the frames
+     video_capture = cv2.VideoCapture(input_file) #Load the video into the openCV interface
+     FRAME_COUNT = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT)) #This is information about the number of frames
+     FPS = video_capture.get(cv2.CAP_PROP_FPS) #This is the number of frames per second
+     FRAME_HEIGHT  = video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT) #This is the frame height
+     FRAME_WIDTH  = video_capture.get(cv2.CAP_PROP_FRAME_WIDTH) #This is the frame width
+     if verbose > 1:
+          print("INFO: \n Frame count: ", FRAME_COUNT, "\n",
+             "FPS: ", FPS, " \n", 
+             "FRAME_HEIGHT: ", FRAME_HEIGHT, " \n",
+             "FRAME_WIDTH: ", FRAME_WIDTH, " \n",)
+
+     #set_bbox = False #If the bounding box is not set, we need to establish it
+     #=============================Set the bounding box=============================#
+     opened_frame, test_frame = video_capture.read()
+     bbox = bg.manual_format(test_frame)
+     x,y,w,h,angle = bbox
+     horizon_begin = x
+     horizon_end = x+w
+     vert_begin = y
+     vert_end = y+h
+     #=======================Set the threshold stop light box=======================#
+     red_bbox = bg.manual_format(test_frame, stop_sign=True, thet = angle)
+     red_x, red_y, red_w, red_h = red_bbox
+     box_h_begin = red_x
+     box_h_end = red_x+red_w
+     box_v_begin = red_y
+     box_v_end = red_y + red_h
+
+     print(red_bbox)
+     indicator = None #This is the red light indicator which sets the recording time
+     n_recorded_frames = 0 #This counts the recorded frames
+
+     video_capture.set(2, 0) #reset the position of the video capture to 0
+     dropped  = 0 #This keeps track of all the frames that have thrown errors
+     for i in range(FRAME_COUNT): #extract the image frame by frame
+          success, frame = video_capture.read()
+          if success: #If the frame is successfully opened we can continue
+               rows, cols, chs = frame.shape #extract the shape of the frame
+               real_time = i/FPS #extract the real time
+
+               M = cv2.getRotationMatrix2D((cols/2, rows/2), angle, 1) #we can use the bounding box calculations above
+               rot_frame = cv2.warpAffine(frame, M, (cols, rows)) #rotate the frame 
+               roi = rot_frame[vert_begin:vert_end,horizon_begin:horizon_end,:] #extract the region of intrest
+               red_box = rot_frame[box_v_begin:box_v_end, box_h_begin:box_h_end, 2] #This is the indicator region of intrest, 2 indicates the red channel
+
+               if indicator == None: #if the indicator has not been set yet, set it
+                    indicator = np.mean(red_box)
+               percent_drop = 1 - (np.mean(red_box)/indicator) #This is the percent difference from the threshold. If this is high enough we drop it 
+               if percent_drop >= 0.18: #If the stop sign percent difference is different from the threshold      
+                    if verbose >= 1: print('Frame is skipped {} / {}'.format(i, FRAME_COUNT)) 
+                    continue
+               else:
+                    if verbose >= 1: print('Processing frame {} / {}'.format(i+1, FRAME_COUNT))
+                    begin_code, data_line = extract_frame(roi) #at this point we will begin the extraction of the line. This returns the raw data line
+                    
+
+
+
+
+                    n_recorded_frames += 1
+                    if verbose >= 1: print("Frame {} at time {} was successful".format(i+1, real_time)) 
+
+
+
+
 
      #in order to do some testing we may need dummy files
      #dummy_image = np.random.rand(100,100)
