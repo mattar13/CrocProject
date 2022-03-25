@@ -14,21 +14,12 @@ in order to install all files, go to ipython shell and type in
 pip instll pycwt
 
 """
-import os 
-  
-import numpy as np
-import argparse
-from tkinter import *
-from tkinter.filedialog import askopenfilename
-import matplotlib.pyplot as plt
-plt.ioff() 
+
 import subprocess
 import time
-import pycwt as cwt
-from pycwt.helpers import find
-import cv2
+
 import selectinwindow
-import boundry_gui as bg
+
 #Splining and filtering
 from scipy.interpolate import splev, splrep
 import pandas as pd
@@ -39,18 +30,7 @@ from openpyxl import load_workbook
 
 #We need to go through and more clearly document what is doing what. Maybe a walk through of each step
 
-"""
-From each image, you will get a range of maximum pixels. 
-We found that the easiest way to calculate the best pixel to use was to take the median value
-This function takes in an image and calcuates the largest nonzero values
-"""
-def median_pixel(n, arr):
-    med_arr = np.zeros(n)
-    for i in range(n):
-        vals = arr[:,i].nonzero()
-        #print(np.median(vals))
-        med_arr[i] = np.median(vals)
-    return med_arr 
+
 
 def append_data(filename, dataframe, title, Yticks, 
                 names = ["N00.*","M00.*", "M01.*", "O.*", "M04.*"], 
@@ -77,27 +57,7 @@ def append_data(filename, dataframe, title, Yticks,
     global_averages.to_excel(writer, sheet_name = "Global_Averages")
     n_values.to_excel(writer, sheet_name = "n_values")
 
-def detrend(wav):
-    based = wav# - np.mean(wav)
-    N = len(wav)
-    t = np.arange(0,N)
-    ################################[Polynomial]
-    #print(N)
-    #dat_fit = wav
-    #p = np.polyfit(t, dat_fit, 1)
-    #filt = dat_fit - np.polyval(p, t)
-    #################################[Splining]
-    #seq = splrep(t, based, k = 3, s = 5)
-    #filt = splev(based, seq)
-    #################[Detrending * Normalizing]
-    filt = based    
-    std_im = filt.std()
-    var = std_im**2
-    filt = filt/std_im
-    
-    dat_norm = filt - np.mean(filt)
-    return var, std_im, dat_norm
-    
+
 def extract_frame(img, hsv_mode = True, green = True):
     #  [min    ,max    ]
     #H [(10-60),(70-80)]
