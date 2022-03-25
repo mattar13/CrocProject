@@ -53,7 +53,7 @@ def detrend(wav):
      return var, std_im, dat_norm
 
 """
-This function takes the 
+This function takes the image and extracts the line. 
 
 These tables can help if we want to extract certain colors
 #  [min    ,max    ]
@@ -77,8 +77,8 @@ def extract_frame(img, hsv_mode = True, green = True):
      if hsv_mode == True: #This is true if we are in HSV mode
           img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV) #Convert the red green blue image into HSV mode
           if green:
-               GREEN_MIN = np.array([50, 50 , 20],np.uint8) #may need to adjust these for the threshold
-               GREEN_MAX = np.array([90, 170, 255],np.uint8)
+               GREEN_MIN = np.array([50, 50 , 20], np.uint8) #may need to adjust these for the threshold
+               GREEN_MAX = np.array([90, 170, 255], np.uint8)
                green_thresh = cv2.inRange(img_hsv, GREEN_MIN, GREEN_MAX)
                plot_green = median_pixel(col, green_thresh)
                #notrend_green = detrend(plot_green)
@@ -94,4 +94,10 @@ def extract_frame(img, hsv_mode = True, green = True):
                return None #yet
      else: 
           return np.argmax(img[:,:,1], 0)
+
+
+
+
+
+
 print("Filtering functions successfully extracted")
