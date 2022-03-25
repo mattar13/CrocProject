@@ -58,41 +58,7 @@ def append_data(filename, dataframe, title, Yticks,
     n_values.to_excel(writer, sheet_name = "n_values")
 
 
-def extract_frame(img, hsv_mode = True, green = True):
-    #  [min    ,max    ]
-    #H [(10-60),(70-80)]
-    #S [(50-30),(150+) ]
-    #V [(0-140),(230+) ]
-    #Best for trial M00
-    #H [50 ,80 ]
-    #S [10 ,170]
-    #V [10,255]
-    #Best for orange
-    #H [50 ,80 ]
-    #S [50 ,170]
-    #V [20,255]
-    begin_code = -1
-    row, col, ch = img.shape
-    if hsv_mode == True:
-        img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-        if green:
-            GREEN_MIN = np.array([50, 50 , 20],np.uint8) #may need to adjust these for the threshold
-            GREEN_MAX = np.array([90, 170, 255],np.uint8)
-            green_thresh = cv2.inRange(img_hsv, GREEN_MIN, GREEN_MAX)
-            plot_green = median_pixel(col, green_thresh)
-            #notrend_green = detrend(plot_green)
-            if np.isnan(np.sum(plot_green)):
-                begin_code = 1
-                #If there is a value called NaN, then send a blank line of zeros
-                #return np.zeros(len(plot_green))
-                plot_green[np.isnan(plot_green)] = np.mean(plot_green[np.isfinite(plot_green)])
-            return begin_code, plot_green
-        else:
-            RED_MIN = np.array([170,0,0],np.uint8)
-            RED_MAX = np.array([255, 255, 255],np.uint8)
-            return None #yet
-    else: 
-        return np.argmax(img[:,:,1], 0)
+
 
 #def plot_data(data):
 
@@ -491,69 +457,6 @@ if __name__ == '__main__':
     root.withdraw()
     btn_down = False #Need this global variable for the mouse callbacks
     
-    parser = argparse.ArgumentParser(description = "Wavlet analysis file outputter")
-    
-    parser.add_argument('-v', '--verbosity', action = 'count', 
-                        help = "Levels: 0) nothing 1) function success 2) function progress and details 3) Elapsed time"
-                       )
-    parser.add_argument('-lp', '--lowlimit', type = float, help = 'The lowest scale the CWT will use')
-    parser.add_argument('-hp', '--highlimit', type = float, help = 'The highest scale the CWT will use')
-    parser.add_argument('-sx', '--smallestscale', help = 'This is the smallest scale in which we will be measuring')
-    parser.add_argument('-dj', '--suboctaves', help = 'This is the number of suboctaves that we will measure')
-    parser.add_argument('-j', '--octaves', help = 'This is the number of octaves we will measure')
-    parser.add_argument('-su', '--samples', help = 'This is the number of samples per unit')
-    parser.add_argument('-u', '--unit', help = 'This is the unit')
-    parser.add_argument('-w', '--wavelet', help = 'This is the mother wavelet the analysis will use (Paul, DOG, Morlet, MexicanHat')
-    parser.add_argument('-f', '--factor', help = 'This is the unit')
-    parser.add_argument('-g', '--graphing', help = 'Should the wavelet be graphed')
-    
-    
-    args = parser.parse_args()
-    print("Arguments parsed")
-    
-    per_min = 0.5
-    per_max = 5.0
-    if args.lowlimit != None:
-        per_min = float(args.lowlimit)
-    if args.highlimit != None:
-        per_max = float(args.highlimit)
-    
-    verbose = 3
-    if args.verbosity != None:
-        verbose = int(args.verbosity)
-        
-    dj = 1/12
-    if args.suboctaves != None:
-        dj = int(args.suboctaves)
-        
-    octaves = 10
-    J = octaves/dj
-    if args.octaves != None:
-        octaves = int(args.octaves)
-        J = int(args.octaves)/dj
-
-    su = 78 #two feet
-    if args.samples != None:
-        su = float(args.samples)
-        
-    unit = 'cm'
-    if args.unit != None:
-        unit = args.unit
-
-    wavelet = 'DOG'
-    if args.wavelet != None:
-        wavelet = args.wavelet  
-
-    order = 2 #TODO: Change back to 2
-    if args.factor != None:
-        order = int(args.factor)
-
-    graphing = True
-    if args.graphing != None:
-        graphing = args.graphing          
-
-    if verbose >= 1: print("Select a input file as a video file (.mpg .mp4. avi)")
-  
     input_file = askopenfilename()#'C:/pyscripts/wavelet_analysis/Videos/2018_07_05/GH010222.mp4' 
     root.update() #This probably is an issue
     root.destroy()
