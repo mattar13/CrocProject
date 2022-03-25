@@ -1,4 +1,5 @@
 import numpy as np #We have to import this into each file we are using
+import cv2
 
 """
 From each image, you will get a range of maximum pixels. 

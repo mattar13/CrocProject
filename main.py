@@ -20,7 +20,7 @@ src_path = os.path.join(os.getcwd(), "src") #This is the folder containing the s
 sys.path.append(src_path) #add the source path to the system path
 
 #import numpy as np #Import numpy to do matrix processing and linearization
-import cv2 #This is used to interact with all of the image and movies
+#import cv2 #This is used to interact with all of the image and movies
 import matplotlib.pyplot as plt #of course matplotlib and PyPlot are used to do plotting
 plt.ioff() #We want to turn the interactive plotting off
 
