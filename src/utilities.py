@@ -20,9 +20,9 @@ def median_pixel(arr, dim = 2):
      elif dim == 2:
           med_arr = np.zeros(n)
           for i in range(n):
-               print(i)
+               #print(i)
                vals = arr[:,i].nonzero()
-               print(vals)
+               #print(vals)
                #print(np.median(vals))
                med_arr[i] = np.median(vals)
           return med_arr 
@@ -80,7 +80,7 @@ def extract_frame(img, hsv_mode = True, green = True):
                GREEN_MIN = np.array([50, 50 , 20], np.uint8) #may need to adjust these for the threshold
                GREEN_MAX = np.array([90, 170, 255], np.uint8)
                green_thresh = cv2.inRange(img_hsv, GREEN_MIN, GREEN_MAX)
-               plot_green = median_pixel(col, green_thresh)
+               plot_green = median_pixel(green_thresh)
                #notrend_green = detrend(plot_green)
           if np.isnan(np.sum(plot_green)):
                begin_code = 1
