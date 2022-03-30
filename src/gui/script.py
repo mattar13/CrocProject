@@ -5,7 +5,7 @@ import sys
 # Set recursion limit
 sys.setrecursionlimit(10 ** 9)
 
-import selectinwindow
+import gui.selectinwindow as selectinwindow
 
 # Define the drag object
 rectI = selectinwindow.dragRect

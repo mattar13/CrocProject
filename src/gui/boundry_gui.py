@@ -6,7 +6,7 @@ from scipy import ndimage
 # Set recursion limit
 sys.setrecursionlimit(10 ** 9)
 import sys
-import selectinwindow
+import gui.selectinwindow as selectinwindow
 
 
 def theta(x, y):
@@ -68,7 +68,7 @@ def manual_format(img, scale = 3, stop_sign = False, thet = 0.0):
     rows, cols, ch = img.shape
     #print(img.shape)
     wName = "Select region"
-    rectI = selectinwindow.dragRect
+    #rectI = selectinwindow.dragRect
 
 
     #while repeat:
@@ -83,7 +83,7 @@ def manual_format(img, scale = 3, stop_sign = False, thet = 0.0):
         dst = cv2.warpAffine(rot_image, M, (int(round(cols/scale)), int(round(rows/scale))))
         cv2.destroyWindow("Image")
 
-        selectinwindow.init(rectI, dst, wName, rows, cols)
+        rectI = selectinwindow.DragRectangle(dst, wName, rows, cols)
         cv2.namedWindow(rectI.wname)
         cv2.setMouseCallback(rectI.wname, selectinwindow.dragrect, rectI)
 
@@ -114,7 +114,7 @@ def manual_format(img, scale = 3, stop_sign = False, thet = 0.0):
         dst = cv2.warpAffine(r_img, M, (int(round(cols/scale)), int(round(rows/scale))))
         #cv2.destroyWindow("Image2")
         
-        selectinwindow.init(rectI, dst, wName, rows, cols)   
+        rectI = selectinwindow.DragRectangle(dst, wName, rows, cols)
         cv2.namedWindow(rectI.wname)
         cv2.setMouseCallback(rectI.wname, selectinwindow.dragrect, rectI)
         
